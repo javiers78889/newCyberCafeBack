@@ -62,6 +62,13 @@ export const updatePaquetes = async (req: Request, res: Response) => {
     console.log(req.body)
     await product.update(req.body)
     await product.save()
+    .then(() => {
+        res.status(201).json({ message: 'Producto actualizado Correctamente' });
+    })
+    .catch((error) => {
+        res.status(500).json({ message: 'Error al Actualizar el producto', error });
+    });
+
 
    
 
