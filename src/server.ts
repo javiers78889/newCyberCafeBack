@@ -22,7 +22,7 @@ connectDB();
 
 const server = express();
 server.use(cors({
-  origin: '*', // Permite todos los orígenes
+  origin: '*', // Permite solicitudes de todos los orígenes (ajustar según sea necesario)
 }));
 
 server.use(helmet.contentSecurityPolicy({
