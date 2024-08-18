@@ -5,7 +5,7 @@ import { validationResult, check } from 'express-validator';
 export const createusers = async (req: Request, res: Response) => {
 
     await check('usuario').notEmpty().withMessage('El nombre de Usuario esta Vacio').run(req)
-    await check('telefono').isNumeric().withMessage('El telefono debe ser numerico').notEmpty().withMessage('El nombre de Usuario esta Vacio').run(req)
+    await check('telefono').isNumeric().withMessage('El telefono debe ser numerico').notEmpty().withMessage('El Telefono esta Vacio').run(req)
 
     let errors = validationResult(req)
 

@@ -40,6 +40,21 @@ class Users extends Model {
         allowNull: false
     })
     telefono!: string;
+    @Column({
+        type: DataType.STRING(255),
+        allowNull: false,
+        validate: {
+            isEmail: true
+        }
+    })
+    correo!: string;
+
+    @Column({
+        type: DataType.DATE,
+        allowNull: false
+    })
+    fechaNacimiento!: Date;
+
 }
 
 export default Users;
