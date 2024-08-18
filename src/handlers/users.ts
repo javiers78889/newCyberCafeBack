@@ -18,6 +18,7 @@ export const createusers = async (req: Request, res: Response) => {
 
 
     const users = await Users.create(req.body);
+    res.status(201).send('Usuario Creado Con exito');
 
     
 
