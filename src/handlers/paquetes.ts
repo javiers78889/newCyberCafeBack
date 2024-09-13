@@ -25,7 +25,7 @@ export const createPaquetes = async (req: Request, res: Response) => {
     try {
         // Enviar mensaje a través de Twilio
         const message = await client.messages.create({
-          body: `¡Hola ${nombre}!\n\nSomos FastShippingAGS✈️🚢,\n\nLe informamos que ha recibido un nuevo paquete📦: \n\n\t📍ID Tracking: ${tracking} \n\t💵Total: $${precio} \n\nPuede verificar su factura a través de nuestra plataforma.`,
+          body: `¡Hola ${nombre}!\n\nSomos CyberCafe Chame ☕,\n\nLe informamos que ha recibido un nuevo paquete📦: \n\n\t📍ID Tracking: ${tracking} \n\t💵Total: $${precio} \n\nPuede verificar su factura a través de nuestra plataforma.`,
           from: 'whatsapp:+50765281534', // Número de WhatsApp del Sandbox de Twilio
           to: `whatsapp:${'+507' + telefono}`
         });
