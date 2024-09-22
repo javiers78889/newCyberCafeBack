@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { createPaquetes, selectPaquetes, updatePaquetes} from './handlers/paquetes';
+import { createPaquetes, deletePaquetes, selectPaquetes, updatePaquetes} from './handlers/paquetes';
 import { createusers, selectUsers, UpdateUsers } from './handlers/users';
 
 
@@ -12,6 +13,7 @@ router.put('/users/', UpdateUsers);
 router.get('/paquetes',selectPaquetes );
 router.post('/paquetes',createPaquetes );
 router.put('/paquetes/:id',updatePaquetes );
+router.delete('/paquetes/:id', deletePaquetes);
 
 
 
