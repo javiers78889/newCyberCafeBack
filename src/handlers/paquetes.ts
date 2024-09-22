@@ -68,8 +68,24 @@ export const updatePaquetes = async (req: Request, res: Response) => {
     .catch((error) => {
         res.status(500).json({ message: 'Error al Actualizar el producto', error });
     });
-
-
-   
-
 }
+
+export const deletePaquetes = async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const paquete = await Paquetes.findByPk(id);
+  
+      if (!paquete) {
+        return res.status(404).json({ message: 'Paquete no encontrado' });
+      }
+      
+      paquete.destroy()
+  
+  
+      res.status(200).json({ message: 'Paquete eliminado' });
+    } catch (error) {
+      res.status(500).json({ message: 'Error al eliminar el paquete', error });
+    }
+  };
+  
+
