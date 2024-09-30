@@ -62,3 +62,19 @@ export const UpdateUsers = async (req: Request, res: Response) => {
         return res.status(500).json({ message: 'Error al actualizar el usuario', error });
     }
 };
+
+export const UpdateAllUsers = async (req:Request, res:Response)=>{
+    const {id}= req.params
+    const update= await Users.findByPk(id)
+    
+    await update.update(req.body)
+    await update.save()
+    .then(() => {
+        res.status(201).json({ message: 'Usuario actualizado Correctamente' });
+    })
+    .catch((error) => {
+        res.status(500).json({ message: 'Error al Actualizar el Usuario', error });
+    });
+
+    
+}
