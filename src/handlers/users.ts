@@ -3,31 +3,26 @@ import Users from '../models/users.model';
 import { validationResult, check } from 'express-validator';
 
 export const createusers = async (req: Request, res: Response) => {
-    // Validar los campos de entrada
-    await check('usuario')
-        .notEmpty().withMessage('El nombre de Usuario esta Vacio')
-        .run(req);
-    await check('telefono')
-        .isNumeric().withMessage('El telefono debe ser numerico')
-        .notEmpty().withMessage('El Telefono esta Vacio')
-        .run(req);
 
-    // Obtener resultados de validación
-    const errors = validationResult(req);
+    // await check('usuario').notEmpty().withMessage('El nombre de Usuario esta Vacio').run(req)
+    // await check('telefono').isNumeric().withMessage('El telefono debe ser numerico').notEmpty().withMessage('El Telefono esta Vacio').run(req)
+
+    // let errors = validationResult(req)
+
+    // if (!errors.isEmpty()) {
+
+
+    //     return res.status(400).json({ erros: errors.array() })
+
+    // }
+
+
+    const users = await Users.create(req.body);
+    res.status(201).send('Usuario Creado Con exito');
+
     
-    // Si hay errores, retornar un mensaje
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
 
-    // Crear el usuario en la base de datos
-    try {
-        const user = await Users.create(req.body);
-        res.status(201).json({ message: 'Usuario Creado Con exito', user });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error al crear el usuario' });
-    }
+
 };
 
 export const selectUsers = async (req: Request, res: Response) => {
