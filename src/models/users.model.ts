@@ -42,7 +42,7 @@ class Users extends Model {
     telefono!: string;
     @Column({
         type: DataType.STRING(255),
-        allowNull: false,
+        allowNull: true,
         validate: {
             isEmail: true
         }
@@ -51,7 +51,7 @@ class Users extends Model {
 
     @Column({
         type: DataType.DATE,
-        allowNull: false
+        allowNull: true
     })
     fechaNacimiento!: Date;
 
