@@ -8,7 +8,7 @@ const router = Router();
 router.post('/users', createusers );
 router.get('/users', selectUsers );
 router.put('/users/', UpdateUsers);
-router.put('/usuarios/', UpdateAllUsers);
+router.patch('/users/:id', UpdateAllUsers);
 
 //paquetes
 router.get('/paquetes',selectPaquetes );

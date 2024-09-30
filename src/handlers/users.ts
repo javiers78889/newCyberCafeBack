@@ -65,6 +65,8 @@ export const UpdateUsers = async (req: Request, res: Response) => {
 
 export const UpdateAllUsers = async (req:Request, res:Response)=>{
     const {id}= req.params
+
+    console.log(id)
     const update= await Users.findByPk(id)
     
     await update.update(req.body)
