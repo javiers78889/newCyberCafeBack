@@ -14,6 +14,8 @@ export const createPaquetes = async (req: Request, res: Response) => {
   const paquetes = await Paquetes.create(req.body)
   Sender(req.body)
 
+  res.status(201).json('Todo Bien')
+
 }
 
 

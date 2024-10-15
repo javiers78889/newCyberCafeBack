@@ -21,7 +21,8 @@ export const Sender = async ({ nombre, telefono, tracking, precio }) => {
         });
         if(message){
             
-            return  console.log('Mensaje enviado:', telefono + message.sid);
+         console.log('Mensaje enviado:', telefono + message.sid);
+         
         }
     } catch (error) {
         
