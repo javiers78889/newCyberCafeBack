@@ -14,10 +14,21 @@ export const Sender = async ({ nombre, telefono, tracking, precio }) => {
 
     try {
         
-        const message = await client.messages.create({
-            body: `¡Hola ${nombre}!\n\nSomos CyberCafe Chame ☕,\n\nLe informamos que ha recibido un nuevo paquete📦: \n\n\t📍ID Tracking: ${tracking} \n\t💵Total: $${precio} \n\nPuede verificar su factura a través de nuestra plataforma.`,
+         const message = await client.messages.create({
             from: 'whatsapp:+50765281534', // Número de WhatsApp del Sandbox de Twilio
-            to: `whatsapp:${'+507' + telefono}`
+            to: `whatsapp:+507${telefono}`,
+            template: {
+                name: 'cybercafe',  // Cambiado al nombre de la nueva plantilla
+                language: { code: 'es' },      // Código del idioma de la plantilla
+                components: [{
+                    type: 'body',
+                    parameters: [
+                        { type: 'text', text: nombre },  // {{1}} = nombre
+                        { type: 'text', text: tracking },  // {{2}} = tracking
+                        { type: 'text', text: precio },    // {{3}} = precio
+                    ]
+                }]
+            }
         });
         if(message){
             
