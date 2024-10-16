@@ -17,18 +17,13 @@ export const Sender = async ({ nombre, telefono, tracking, precio }) => {
          const message = await client.messages.create({
             from: 'whatsapp:+50765281534', // Número de WhatsApp del Sandbox de Twilio
             to: `whatsapp:+507${telefono}`,
-            template: {
-                name: 'cybercafe',  // Cambiado al nombre de la nueva plantilla
-                language: { code: 'es' },      // Código del idioma de la plantilla
-                components: [{
-                    type: 'body',
-                    parameters: [
-                        { type: 'text', text: nombre },  // {{1}} = nombre
-                        { type: 'text', text: tracking },  // {{2}} = tracking
-                        { type: 'text', text: precio },    // {{3}} = precio
-                    ]
-                }]
-            }
+            contentSid: 'HXbdfe09330f0a8c09c9c1deabbafe6aea', // ID de la plantilla aprobada por WhatsApp
+            body: undefined,  // No es necesario cuando se usa plantilla
+            contentVariables: JSON.stringify({
+                1: nombre,
+                2: tracking,
+                3: precio
+            })
         });
         if(message){
             
