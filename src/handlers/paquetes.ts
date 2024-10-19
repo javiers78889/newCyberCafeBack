@@ -12,7 +12,7 @@ export const createPaquetes = async (req: Request, res: Response) => {
   await check('tarifa').isNumeric().withMessage('El tarifa debe ser numerico').notEmpty().withMessage('El nombre de Usuario esta Vacio').run(req)
   
   const paquetes = await Paquetes.create(req.body)
-  Sender(req.body)
+  Sender({ nombre, telefono, tracking, precio })
 
   res.status(201).json('Todo Bien')
 
