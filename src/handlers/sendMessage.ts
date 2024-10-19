@@ -5,6 +5,7 @@ import { Request, Response } from 'express';
 export const sendMessage = async (req: Request, res: Response) => {
     await check('tracking').notEmpty().withMessage('El tracking esta Vacio').run(req)
     await check('precio').isNumeric().withMessage('El precio debe ser numerico').notEmpty().withMessage('El nombre de Usuario esta Vacio').run(req)
+    console.log(req.body)
     Sender(req.body)
 
 
