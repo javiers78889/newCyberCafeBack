@@ -21,7 +21,7 @@ export const Sender = async ({ nombre, telefono, tracking, precio }) => {
             contentVariables: JSON.stringify({
                 1: nombre,
                 2: tracking,
-                3: precio.to
+                3: precio
             })
         });
         if(message){
