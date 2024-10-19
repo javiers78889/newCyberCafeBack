@@ -14,7 +14,7 @@ export const sendMessage = async (req: Request, res: Response) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-
+    console.log(req.body)
     const { nombre, telefono, tracking, precio } = req.body;
 
     try {
