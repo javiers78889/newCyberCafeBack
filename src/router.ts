@@ -14,6 +14,7 @@ import { verifyToken } from './utils/VerifyToken';
 const router = Router();
 
 router.use('paquetes', verifyToken)
+router.use('users', verifyToken)
 
 router.post('/users',
     body('contraseña').notEmpty().withMessage('la contraseña no puede ir vacío'),
