@@ -1,26 +1,23 @@
 import { Request, Response } from 'express';
 import Users from '../models/users.model';
-import { validationResult, check } from 'express-validator';
+import { genetatejwt } from '../utils/JWT';
 
 export const createusers = async (req: Request, res: Response) => {
 
-    await check('usuario').notEmpty().withMessage('El nombre de Usuario esta Vacio').run(req)
-    await check('telefono').isNumeric().withMessage('El telefono debe ser numerico').notEmpty().withMessage('El Telefono esta Vacio').run(req)
+    const { contraseña, nombre, plan, telefono, correo } = req.body
 
-    let errors = validationResult(req)
-
-    if (!errors.isEmpty()) {
-
-
-        return res.status(400).json({ erros: errors.array() })
-
+    const Data = {
+        usuario: `Evan-3 ${nombre}`,
+        contraseña,
+        plan,
+        telefono,
+        nombre,
+        isAuth: false,
+        correo
     }
 
-
-    const users = await Users.create(req.body);
-    res.status(201).send('Usuario Creado Con exito');
-
-    
+    const users = await Users.create(Data);
+    res.status(201).json('Usuario Creado Con exito');
 
 
 };
@@ -63,20 +60,31 @@ export const UpdateUsers = async (req: Request, res: Response) => {
     }
 };
 
-export const UpdateAllUsers = async (req:Request, res:Response)=>{
-    const {id}= req.params
+export const UpdateAllUsers = async (req: Request, res: Response) => {
+    const { id } = req.params
 
     console.log(id)
-    const update= await Users.findByPk(id)
-    
+    const update = await Users.findByPk(id)
+
     await update.update(req.body)
     await update.save()
-    .then(() => {
-        res.status(201).json({ message: 'Usuario actualizado Correctamente' });
-    })
-    .catch((error) => {
-        res.status(500).json({ message: 'Error al Actualizar el Usuario', error });
-    });
+        .then(() => {
+            res.status(201).json({ message: 'Usuario actualizado Correctamente' });
+        })
+        .catch((error) => {
+            res.status(500).json({ message: 'Error al Actualizar el Usuario', error });
+        });
 
+
+}
+
+export const Login = (req:Request, res:Response) => {
+
+    const usuarios = req.usuarios
+
+
+   const token = genetatejwt(usuarios.id)
+
+   res.status(200).json(token)
     
 }

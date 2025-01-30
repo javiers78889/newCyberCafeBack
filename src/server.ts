@@ -25,20 +25,7 @@ server.use(cors({
   origin: '*', // Permite solicitudes de todos los orígenes (ajustar según sea necesario)
 }));
 
-server.use(helmet.contentSecurityPolicy({
-  useDefaults: true,
-  directives: {
-    defaultSrc: ["'self'"],
-    imgSrc: ["'self'", "data:", "https:"],
-    scriptSrc: ["'self'", "https://cdnjs.cloudflare.com"], // Ajusta según tus necesidades
-    styleSrc: ["'self'", "https://fonts.googleapis.com"],
-    fontSrc: ["'self'", "https://fonts.gstatic.com"],
-    connectSrc: ["'self'", "https://api.example.com"], // Ajusta según tus necesidades
-    frameSrc: ["'none'"]
-  }
-}));
-
-
+server.use(express.urlencoded({ extended: true }))
 server.use(express.json())
 
 server.use('/', router);
