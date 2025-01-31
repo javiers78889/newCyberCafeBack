@@ -10,9 +10,9 @@ declare global {
 }
 
 export const autenticate = async (req: Request, res: Response, next: NextFunction) => {
-    const { correo } = req.body
+    const { usuario } = req.body
 
-    req.user = await Users.findOne({ where: { correo } })
+    req.user = await Users.findOne({ where: { usuario } })
 
 
     if (req.user) {

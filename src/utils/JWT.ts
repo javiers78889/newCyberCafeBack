@@ -6,7 +6,7 @@ dotenv.config()
 type DataToken = {
     id: string,
     nombre: string,
-    correo: string
+    correo: string,
 }
 
 export const genetatejwt = ({ id, nombre, correo }: DataToken) => {

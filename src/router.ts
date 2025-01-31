@@ -25,7 +25,7 @@ router.post('/users',
     createusers);
 
 router.post('/login', body('password').notEmpty().withMessage('la contraseña no puede ir vacío'),
-    body('correo').notEmpty().withMessage('El Correo no puede ir vacío').isEmail().withMessage('Correo no valido'),
+    body('usuario').notEmpty().withMessage('El Correo no puede ir vacío'),
     handleInputErrors,
     autenticate, Login)
 

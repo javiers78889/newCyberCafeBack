@@ -10,7 +10,7 @@ export const createPaquetes = async (req: Request, res: Response) => {
   await check('peso').isNumeric().withMessage('El peso debe ser numerico').notEmpty().withMessage('El nombre de Usuario esta Vacio').run(req)
   await check('precio').isNumeric().withMessage('El precio debe ser numerico').notEmpty().withMessage('El nombre de Usuario esta Vacio').run(req)
   await check('tarifa').isNumeric().withMessage('El tarifa debe ser numerico').notEmpty().withMessage('El nombre de Usuario esta Vacio').run(req)
-  
+
   const paquetes = await Paquetes.create(req.body)
   console.log(req.body)
   const { nombre, telefono, tracking, precio } = req.body
@@ -24,15 +24,18 @@ export const createPaquetes = async (req: Request, res: Response) => {
 export const selectPaquetes = async (req: Request, res: Response) => {
   try {
     const paquetes = await Paquetes.findAll({
+      where: { usuario: req.usuarios.dataValues.usuario },
       order: [
         ['id', 'DESC']
       ]
-    })
+    })  
+
+    console.log(paquetes)
 
     res.status(201).json({ data: paquetes });
   } catch (error) {
     console.error('Error al crear el usuario:', error);
-    res.status(500).json({ message: 'Error al crear el usuario' }); // Devuelve un estado 500 en caso de error
+    res.status(500).json({ message: 'Error al obtener paquetes' }); // Devuelve un estado 500 en caso de error
   }
 
 }

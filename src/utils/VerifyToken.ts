@@ -33,7 +33,7 @@ export const verifyToken = async  (req: Request, res: Response, next: NextFuncti
 
             if (typeof decoded === "object" && decoded.id) {
                 const user = await Users.findByPk(decoded.id, {
-                    attributes: ['id', 'nombre', 'correo']
+                    attributes: ['id', 'nombre', 'correo','usuario']
                 })
                 req.usuarios = user
                 next()

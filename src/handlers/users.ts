@@ -24,12 +24,12 @@ export const createusers = async (req: Request, res: Response) => {
 
 export const selectUsers = async (req: Request, res: Response) => {
     try {
-       
 
+        console.log(req.usuarios.dataValues)
         res.status(201).json(req.usuarios.dataValues); // Devuelve el usuario creado con un estado 201 Created
     } catch (error) {
         console.error('Error al crear el usuario:', error);
-        res.status(500).json({ message: 'Error al crear el usuario' }); // Devuelve un estado 500 en caso de error
+        res.status(500).json({ message: 'Error al obtener paquetes' }); // Devuelve un estado 500 en caso de error
     }
 };
 
