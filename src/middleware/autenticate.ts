@@ -4,21 +4,21 @@ import Users from "../models/users.model";
 declare global {
     namespace Express {
         interface Request {
-            usuarios?: Users
+            user?: Users
         }
     }
 }
 
 export const autenticate = async (req: Request, res: Response, next: NextFunction) => {
-    const { usuario } = req.body
+    const { correo } = req.body
 
-    const findUser = await Users.findOne({ where: {usuario} })
-    req.usuarios = findUser
+    req.user = await Users.findOne({ where: { correo } })
 
-    if (findUser) {
+
+    if (req.user) {
         next()
     } else {
 
-        res.status(404).json('Usuario No Encontrado')
+        res.status(500).json('Usuario No Encontrado')
     }
 }

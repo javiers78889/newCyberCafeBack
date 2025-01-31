@@ -4,11 +4,11 @@ import { genetatejwt } from '../utils/JWT';
 
 export const createusers = async (req: Request, res: Response) => {
 
-    const { contraseña, nombre, plan, telefono, correo } = req.body
+    const { password, nombre, plan, telefono, correo } = req.body
 
     const Data = {
         usuario: `Evan-3 ${nombre}`,
-        contraseña,
+        contraseña: password,
         plan,
         telefono,
         nombre,
@@ -24,9 +24,9 @@ export const createusers = async (req: Request, res: Response) => {
 
 export const selectUsers = async (req: Request, res: Response) => {
     try {
-        const users = await Users.findAll()
+       
 
-        res.status(201).json(users); // Devuelve el usuario creado con un estado 201 Created
+        res.status(201).json(req.usuarios.dataValues); // Devuelve el usuario creado con un estado 201 Created
     } catch (error) {
         console.error('Error al crear el usuario:', error);
         res.status(500).json({ message: 'Error al crear el usuario' }); // Devuelve un estado 500 en caso de error
@@ -78,13 +78,13 @@ export const UpdateAllUsers = async (req: Request, res: Response) => {
 
 }
 
-export const Login = (req:Request, res:Response) => {
-
-    const usuarios = req.usuarios
+export const Login = async (req: Request, res: Response) => {
 
 
-   const token = genetatejwt(usuarios.id)
+    const { id, nombre, correo } = req.user.dataValues
 
-   res.status(200).json(token)
-    
+
+    const token = genetatejwt({ id, nombre, correo })
+    res.status(200).json(token)
+
 }

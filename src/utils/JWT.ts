@@ -3,8 +3,14 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-export const genetatejwt = (id: string) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, {
+type DataToken = {
+    id: string,
+    nombre: string,
+    correo: string
+}
+
+export const genetatejwt = ({ id, nombre, correo }: DataToken) => {
+    return jwt.sign({ id, nombre, correo }, process.env.JWT_SECRET, {
         expiresIn: '30d'
     })
 

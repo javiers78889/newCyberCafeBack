@@ -6,15 +6,14 @@ import { sendMessage } from './handlers/sendMessage';
 import { body } from 'express-validator'
 import { handleInputErrors } from './middleware/validation';
 import { autenticate } from './middleware/autenticate';
-import { verify } from 'jsonwebtoken';
 import { verifyToken } from './utils/VerifyToken';
 
 
 
 const router = Router();
 
-router.use('paquetes', verifyToken)
-router.use('users', verifyToken)
+router.use('/paquetes', verifyToken)
+router.use('/users', verifyToken)
 
 router.post('/users',
     body('contraseña').notEmpty().withMessage('la contraseña no puede ir vacío'),
@@ -25,12 +24,12 @@ router.post('/users',
     handleInputErrors,
     createusers);
 
-router.post('/login', body('contraseña').notEmpty().withMessage('la contraseña no puede ir vacío'),
-    body('usuario').notEmpty().withMessage('El usuario no puede ir vacío'),
+router.post('/login', body('password').notEmpty().withMessage('la contraseña no puede ir vacío'),
+    body('correo').notEmpty().withMessage('El Correo no puede ir vacío').isEmail().withMessage('Correo no valido'),
     handleInputErrors,
     autenticate, Login)
 
-router.get('/users', verifyToken, selectUsers);
+router.get('/users', selectUsers);
 router.put('/users/', UpdateUsers);
 router.patch('/users/:id', UpdateAllUsers);
 

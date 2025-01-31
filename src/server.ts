@@ -21,9 +21,6 @@ async function connectDB(){
 connectDB();
 
 const server = express();
-server.use(cors({
-  origin: '*', // Permite solicitudes de todos los orígenes (ajustar según sea necesario)
-}));
 
 server.use(express.urlencoded({ extended: true }))
 server.use(express.json())
