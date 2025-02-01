@@ -32,6 +32,18 @@ export const selectUsers = async (req: Request, res: Response) => {
         res.status(500).json({ message: 'Error al obtener paquetes' }); // Devuelve un estado 500 en caso de error
     }
 };
+export const allUsers = async (req: Request, res: Response) => {
+    try {
+
+        const usuarios =await Users.findAll({ order: [
+            ['id', 'DESC']
+          ]})
+        res.status(201).json(usuarios); // Devuelve el usuario creado con un estado 201 Created
+    } catch (error) {
+        console.error('Error al crear el usuario:', error);
+        res.status(500).json({ message: 'Error al obtener paquetes' }); // Devuelve un estado 500 en caso de error
+    }
+};
 
 export const UpdateUsers = async (req: Request, res: Response) => {
     const { usuario, contraseña } = req.body;

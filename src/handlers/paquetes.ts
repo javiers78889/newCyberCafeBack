@@ -39,6 +39,24 @@ export const selectPaquetes = async (req: Request, res: Response) => {
   }
 
 }
+
+export const allPaquetes = async (req: Request, res: Response) => {
+  try {
+    const paquetes = await Paquetes.findAll({
+      order: [
+        ['id', 'DESC']
+      ]
+    })  
+
+   
+
+    res.status(201).json({ data: paquetes });
+  } catch (error) {
+    console.error('Error al crear el usuario:', error);
+    res.status(500).json({ message: 'Error al obtener paquetes' }); // Devuelve un estado 500 en caso de error
+  }
+
+}
 export const updatePaquetes = async (req: Request, res: Response) => {
 
   const { id } = req.params

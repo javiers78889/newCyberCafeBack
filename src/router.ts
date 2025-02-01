@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { createPaquetes, deletePaquetes, selectPaquetes, updatePaquetes } from './handlers/paquetes';
-import { createusers, Login, selectUsers, UpdateAllUsers, UpdateUsers } from './handlers/users';
+import { allPaquetes, createPaquetes, deletePaquetes, selectPaquetes, updatePaquetes } from './handlers/paquetes';
+import { allUsers, createusers, Login, selectUsers, UpdateAllUsers, UpdateUsers } from './handlers/users';
 import { sendMessage } from './handlers/sendMessage';
 
 import { body } from 'express-validator'
@@ -30,11 +30,13 @@ router.post('/login', body('password').notEmpty().withMessage('la contraseña no
     autenticate, Login)
 
 router.get('/users', selectUsers);
+router.get('/users/all', allUsers);
 router.put('/users/', UpdateUsers);
 router.patch('/users/:id', UpdateAllUsers);
 
 //paquetes
 router.get('/paquetes', selectPaquetes);
+router.get('/paquetes/all', allPaquetes);
 router.post('/paquetes', createPaquetes);
 router.put('/paquetes/:id', updatePaquetes);
 router.delete('/paquetes/:id', deletePaquetes);
