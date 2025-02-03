@@ -1,22 +1,31 @@
 import { Request, Response } from 'express';
 import Users from '../models/users.model';
 import { genetatejwt } from '../utils/JWT';
+import { sendCredentials } from '../utils/sendDatosUser';
 
 export const createusers = async (req: Request, res: Response) => {
 
-    const { password, nombre, plan, telefono, correo } = req.body
+    const { password, nombre, telefono, correo } = req.body
 
     const Data = {
-        usuario: `Evan-3 ${nombre}`,
+        usuario: `Evan3- ${nombre}`,
         contraseña: password,
-        plan,
+        plan:'Cliente',
         telefono,
         nombre,
         isAuth: false,
-        correo
+        correo,
     }
 
     const users = await Users.create(Data);
+    const Credenciales={
+        usuario: `Evan3- ${nombre}`,
+        password,
+        nombre,
+        correo
+
+    }
+    await sendCredentials(Credenciales)
     res.status(201).json('Usuario Creado Con exito');
 
 
@@ -35,9 +44,11 @@ export const selectUsers = async (req: Request, res: Response) => {
 export const allUsers = async (req: Request, res: Response) => {
     try {
 
-        const usuarios =await Users.findAll({ order: [
-            ['id', 'DESC']
-          ]})
+        const usuarios = await Users.findAll({
+            order: [
+                ['id', 'DESC']
+            ]
+        })
         res.status(201).json(usuarios); // Devuelve el usuario creado con un estado 201 Created
     } catch (error) {
         console.error('Error al crear el usuario:', error);
@@ -46,30 +57,12 @@ export const allUsers = async (req: Request, res: Response) => {
 };
 
 export const UpdateUsers = async (req: Request, res: Response) => {
-    const { usuario, contraseña } = req.body;
+    const { nombre, correo } = req.body
+    const id = req.usuarios.id
+    const usuario = await Users.findOne({ where: { id } })
 
-    try {
-        // Verifica si el usuario existe
-        const user = await Users.findOne({ where: { usuario } });
-
-        if (!user) {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
-        }
-
-        // Actualiza la contraseña del usuario
-        const [updateCount] = await Users.update(
-            { contraseña }, // Nueva contraseña
-            { where: { usuario } } // Usuario a actualizar
-        );
-
-        if (updateCount > 0) {
-            return res.status(200).json({ message: 'Usuario actualizado con éxito' });
-        } else {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
-        }
-    } catch (error) {
-        return res.status(500).json({ message: 'Error al actualizar el usuario', error });
-    }
+    await usuario.update({ nombre, correo })
+    res.status(200).json('Datos Actualizados')
 };
 
 export const UpdateAllUsers = async (req: Request, res: Response) => {

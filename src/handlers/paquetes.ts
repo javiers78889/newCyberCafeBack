@@ -1,22 +1,35 @@
 import { Request, Response } from 'express';
 import Paquetes from '../models/paquetes.model';
-import { validationResult, check } from 'express-validator';
-import { Sender } from '../middleware/sender';
+import { SendPaquetes } from '../utils/sendPaquetesMail';
+import Users from '../models/users.model';
+
 
 
 export const createPaquetes = async (req: Request, res: Response) => {
-  await check('usuario').notEmpty().withMessage('El nombre de Usuario esta Vacio').run(req)
-  await check('tracking').notEmpty().withMessage('El tracking esta Vacio').run(req)
-  await check('peso').isNumeric().withMessage('El peso debe ser numerico').notEmpty().withMessage('El nombre de Usuario esta Vacio').run(req)
-  await check('precio').isNumeric().withMessage('El precio debe ser numerico').notEmpty().withMessage('El nombre de Usuario esta Vacio').run(req)
-  await check('tarifa').isNumeric().withMessage('El tarifa debe ser numerico').notEmpty().withMessage('El nombre de Usuario esta Vacio').run(req)
+  const paquete = req.paqueteria
 
-  const paquetes = await Paquetes.create(req.body)
-  console.log(req.body)
-  const { nombre, telefono, tracking, precio } = req.body
-  Sender({ nombre, telefono, tracking, precio })
+  const create = await Paquetes.create({
+    usuario: paquete.usuario,
+    tracking: paquete.tracking,
+    peso: paquete.peso,
+    precio: paquete.precio,
+    tarifas: paquete.tarifas,
+    status: paquete.status,
+    pago: paquete.pago
+  })
 
-  res.status(201).json('Todo Bien')
+  const DatosEnvio = {
+    id:create.id,
+    usuario: req.datos.get().nombre,
+    correo: req.datos.get().correo,
+    tracking: req.paqueteria.tracking,
+    peso: req.paqueteria.peso,
+    precio: req.paqueteria.precio,
+    tarifas: req.paqueteria.tarifas
+  }
+  await SendPaquetes(DatosEnvio)
+
+  res.status(201).json('Paquete Registrado')
 
 }
 
@@ -28,7 +41,7 @@ export const selectPaquetes = async (req: Request, res: Response) => {
       order: [
         ['id', 'DESC']
       ]
-    })  
+    })
 
     console.log(paquetes)
 
@@ -46,9 +59,9 @@ export const allPaquetes = async (req: Request, res: Response) => {
       order: [
         ['id', 'DESC']
       ]
-    })  
+    })
 
-   
+
 
     res.status(201).json({ data: paquetes });
   } catch (error) {
