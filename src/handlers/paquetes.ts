@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import Paquetes from '../models/paquetes.model';
 import { SendPaquetes } from '../utils/sendPaquetesMail';
 import Users from '../models/users.model';
+import { EntregaPaquetes } from '../utils/EntregaPaquetes';
 
 
 
@@ -19,7 +20,7 @@ export const createPaquetes = async (req: Request, res: Response) => {
   })
 
   const DatosEnvio = {
-    id:create.id,
+    id: create.id,
     usuario: req.datos.get().nombre,
     correo: req.datos.get().correo,
     tracking: req.paqueteria.tracking,
@@ -53,6 +54,25 @@ export const selectPaquetes = async (req: Request, res: Response) => {
 
 }
 
+export const facturaPaquete = async (req: Request, res: Response) => {
+  const {id}= req.params
+  console.log(id)
+  try {
+    const paquetes = await Paquetes.findAll({
+      where: { id},
+      order: [
+        ['id', 'DESC']
+      ]
+    })
+
+    res.status(200).json({ data: paquetes });
+  } catch (error) {
+    console.error('Error al crear el usuario:', error);
+    res.status(500).json({ message: 'Error al obtener paquetes' }); // Devuelve un estado 500 en caso de error
+  }
+
+}
+
 export const allPaquetes = async (req: Request, res: Response) => {
   try {
     const paquetes = await Paquetes.findAll({
@@ -72,35 +92,42 @@ export const allPaquetes = async (req: Request, res: Response) => {
 }
 export const updatePaquetes = async (req: Request, res: Response) => {
 
-  const { id } = req.params
-  const product = await Paquetes.findByPk(id)
+  try {
+    const usuario = req.fpaquetes.get('usuario')
+    const users = await Users.findOne({ where: { usuario} })
+    const status = 'Entregado ✅'
+    const pago = 'Entregado ✅'
+    await req.fpaquetes.update({ status, pago })
+    await req.fpaquetes.save()
 
-  console.log(req.body)
-  await product.update(req.body)
-  await product.save()
-    .then(() => {
-      res.status(201).json({ message: 'Producto actualizado Correctamente' });
-    })
-    .catch((error) => {
-      res.status(500).json({ message: 'Error al Actualizar el producto', error });
-    });
+    const Envio = {
+      id: req.fpaquetes.get('id'),
+      usuario: req.fpaquetes.get('usuario'),
+      correo: users.get('correo'),
+      tracking: req.fpaquetes.get('tracking'),
+      peso: req.fpaquetes.get('peso'),
+      precio: req.fpaquetes.get('precio'),
+      tarifas: req.fpaquetes.get('tarifas'),
+      status: req.fpaquetes.get('status')
+    }
+    await EntregaPaquetes(Envio)
+    res.status(200).json('Paquete Entregado')
+  }
+  catch (error) {
+    console.error('Error al actualizar el producto:', error);
+    res.status(500).json({ error: 'Error al actualizar el producto' });
+  }
 }
 
 export const deletePaquetes = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    const paquete = await Paquetes.findByPk(id);
-
-    if (!paquete) {
-      return res.status(404).json({ message: 'Paquete no encontrado' });
-    }
-
-    paquete.destroy()
+ 
+    await req.fpaquetes.destroy()
 
 
-    res.status(200).json({ message: 'Paquete eliminado' });
+    res.status(200).json('Paquete eliminado');
   } catch (error) {
-    res.status(500).json({ message: 'Error al eliminar el paquete', error });
+    res.status(500).json('Error al eliminar el paquete');
   }
 };
 

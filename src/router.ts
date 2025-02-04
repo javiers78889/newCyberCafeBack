@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { allPaquetes, createPaquetes, deletePaquetes, selectPaquetes, updatePaquetes } from './handlers/paquetes';
+import { allPaquetes, createPaquetes, deletePaquetes, facturaPaquete, selectPaquetes, updatePaquetes } from './handlers/paquetes';
 import { allUsers, createusers, Login, selectUsers, UpdateAllUsers, UpdateUsers } from './handlers/users';
 
 
-import { body } from 'express-validator'
+import { body, param } from 'express-validator'
 import { handleInputErrors } from './middleware/validation';
 import { autenticate } from './middleware/autenticate';
 import { verifyToken } from './utils/VerifyToken';
@@ -11,6 +11,8 @@ import { paquetesVerify } from './middleware/paquetesVerify';
 import { usuarioExist } from './middleware/usuarioExist';
 import { GenerarPaquete } from './utils/GenerarPaquete';
 import { CreateExist } from './middleware/createValidate';
+import { findPaquete } from './middleware/findPaquete';
+import { PaqueteUser } from './middleware/paqueteUser';
 
 
 
@@ -35,10 +37,10 @@ router.post('/login', body('password').notEmpty().withMessage('la contraseña no
 
 router.get('/users', selectUsers);//para usuarios normales
 router.get('/users/all', allUsers);
-router.put('/users/',body('nombre').notEmpty().withMessage('El nombre no puede ir vacio'),
-body('correo').isEmail().withMessage('El correo no es valido'),
-handleInputErrors
-, UpdateUsers);
+router.put('/users/', body('nombre').notEmpty().withMessage('El nombre no puede ir vacio'),
+    body('correo').isEmail().withMessage('El correo no es valido'),
+    handleInputErrors
+    , UpdateUsers);
 router.patch('/users/:id', UpdateAllUsers);
 
 //paquetes
@@ -54,9 +56,11 @@ router.post('/paquetes',
     paquetesVerify,
     GenerarPaquete,
     createPaquetes);
-router.put('/paquetes/:id', updatePaquetes);
-router.delete('/paquetes/:id', deletePaquetes);
+router.put('/paquetes/:id', param('id').isNumeric().withMessage('Error de Id'), handleInputErrors, findPaquete, updatePaquetes);
+router.delete('/paquetes/:id', param('id').isNumeric().withMessage('Error de Id'), handleInputErrors, findPaquete, deletePaquetes);
 
+
+router.get('/paquetes/:id',param('id').isNumeric().withMessage('Error de Id'), handleInputErrors, findPaquete,PaqueteUser, facturaPaquete);
 
 
 
