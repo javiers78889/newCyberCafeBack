@@ -14,6 +14,7 @@ import { CreateExist } from './middleware/createValidate';
 import { findPaquete } from './middleware/findPaquete';
 import { PaqueteUser } from './middleware/paqueteUser';
 import { NotEmpty } from 'sequelize-typescript';
+import { verifyCorreo } from './middleware/VerifyCorreo';
 
 
 
@@ -40,7 +41,8 @@ router.get('/users', selectUsers);//para usuarios normales
 router.get('/users/all', allUsers);
 router.put('/users/', body('nombre').notEmpty().withMessage('El nombre no puede ir vacio'),
     body('correo').isEmail().withMessage('El correo no es valido'),
-    handleInputErrors
+    handleInputErrors,
+    verifyCorreo
     , UpdateUsers);
 router.patch('/users/:id', UpdateAllUsers);
 
