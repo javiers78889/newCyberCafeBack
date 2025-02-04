@@ -10,7 +10,7 @@ class Users extends Model {
         allowNull: false
     })
     usuario!: string;
-
+   
     @Column({
         type: DataType.STRING(255),
         allowNull: false

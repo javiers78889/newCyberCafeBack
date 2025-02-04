@@ -60,7 +60,17 @@ router.put('/paquetes/:id', param('id').isNumeric().withMessage('Error de Id'), 
 router.delete('/paquetes/:id', param('id').isNumeric().withMessage('Error de Id'), handleInputErrors, findPaquete, deletePaquetes);
 
 
-router.get('/paquetes/:id',param('id').isNumeric().withMessage('Error de Id'), handleInputErrors, findPaquete,PaqueteUser, facturaPaquete);
+router.get('/paquetes/:id', param('id').isNumeric().withMessage('Error de Id'), handleInputErrors, findPaquete, PaqueteUser, facturaPaquete);
+
+
+//forgot-password
+
+router.post('/forgot-password/:usuario',
+    body('usuario').notEmpty().withMessage('El Usuario No Puede Ir Vacio'),
+    body('correo').isEmail().withMessage('El Correo No es válido'),
+    body('password').isNumeric().withMessage('El Password debe ser numerico'),
+    body('password_confirm').isNumeric().withMessage('El Password debe ser numerico')
+    , handleInputErrors,)
 
 
 

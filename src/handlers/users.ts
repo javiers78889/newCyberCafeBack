@@ -10,7 +10,7 @@ export const createusers = async (req: Request, res: Response) => {
     const Data = {
         usuario: `Evan3- ${nombre}`,
         contraseña: password,
-        plan:'Cliente',
+        plan: 'Cliente',
         telefono,
         nombre,
         isAuth: false,
@@ -18,7 +18,7 @@ export const createusers = async (req: Request, res: Response) => {
     }
 
     const users = await Users.create(Data);
-    const Credenciales={
+    const Credenciales = {
         usuario: `Evan3- ${nombre}`,
         password,
         nombre,
@@ -91,5 +91,12 @@ export const Login = async (req: Request, res: Response) => {
 
     const token = genetatejwt({ id, nombre, correo })
     res.status(200).json(token)
+
+}
+
+export const forgotPassword = async (req: Request, res: Response) => {
+    const { usuario } = req.params
+
+    res.json(usuario)
 
 }
