@@ -10,9 +10,7 @@ type DataToken = {
 }
 
 export const genetatejwt = ({ id, nombre, correo }: DataToken) => {
-    return jwt.sign({ id, nombre, correo }, process.env.JWT_SECRET, {
-        expiresIn: '30d'
-    })
+    return jwt.sign({ id, nombre, correo }, process.env.JWT_SECRET)
 
 
 }
