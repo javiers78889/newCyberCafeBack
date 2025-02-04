@@ -10,7 +10,7 @@ import { verifyToken } from './utils/VerifyToken';
 import { paquetesVerify } from './middleware/paquetesVerify';
 import { usuarioExist } from './middleware/usuarioExist';
 import { GenerarPaquete } from './utils/GenerarPaquete';
-import { CreateExist } from './middleware/createValidate';
+import { CreateExist, ValidarUsuario } from './middleware/createValidate';
 import { findPaquete } from './middleware/findPaquete';
 import { PaqueteUser } from './middleware/paqueteUser';
 import { NotEmpty } from 'sequelize-typescript';
@@ -30,6 +30,7 @@ router.post('/users-create',
     body('correo').notEmpty().withMessage('El Correo no puede ir vacío').isEmail().withMessage('Email no válido'),
     handleInputErrors,
     CreateExist,
+    ValidarUsuario,
     createusers);
 
 router.post('/login', body('password').notEmpty().withMessage('la contraseña no puede ir vacío'),

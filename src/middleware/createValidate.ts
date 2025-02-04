@@ -20,3 +20,17 @@ export const CreateExist = async (req: Request, res: Response, next: NextFunctio
         next()
     }
 }
+
+export const ValidarUsuario = async (req: Request, res: Response, next: NextFunction) => {
+    const { nombre } = req.body
+
+    const usuario =`Evan3- ${nombre}`
+    req.datos = await Users.findOne({ where: { usuario } })
+
+   
+    if (req.datos) {
+        res.status(409).json('Este usuario ya existe')
+    } else {
+        next()
+    }
+}
