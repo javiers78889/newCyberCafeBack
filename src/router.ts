@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { allPaquetes, createPaquetes, deletePaquetes, facturaPaquete, selectPaquetes, updatePaquetes } from './handlers/paquetes';
-import { allUsers, createusers, Login, selectUsers, UpdateAllUsers, UpdateUsers } from './handlers/users';
+import { allUsers, createusers, EditarPassword, Login, selectUsers, UpdateAllUsers, UpdateUsers } from './handlers/users';
 
 
 import { body, param } from 'express-validator'
@@ -13,6 +13,7 @@ import { GenerarPaquete } from './utils/GenerarPaquete';
 import { CreateExist } from './middleware/createValidate';
 import { findPaquete } from './middleware/findPaquete';
 import { PaqueteUser } from './middleware/paqueteUser';
+import { NotEmpty } from 'sequelize-typescript';
 
 
 
@@ -65,12 +66,11 @@ router.get('/paquetes/:id', param('id').isNumeric().withMessage('Error de Id'), 
 
 //forgot-password
 
-router.post('/forgot-password/:usuario',
+router.post('/forgot-password',
     body('usuario').notEmpty().withMessage('El Usuario No Puede Ir Vacio'),
     body('correo').isEmail().withMessage('El Correo No es válido'),
-    body('password').isNumeric().withMessage('El Password debe ser numerico'),
-    body('password_confirm').isNumeric().withMessage('El Password debe ser numerico')
-    , handleInputErrors,)
+    body('password').notEmpty().withMessage('El Password debe ser numerico')
+    , handleInputErrors,usuarioExist,EditarPassword)
 
 
 

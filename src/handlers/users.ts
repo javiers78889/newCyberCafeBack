@@ -100,3 +100,20 @@ export const forgotPassword = async (req: Request, res: Response) => {
     res.json(usuario)
 
 }
+
+export const EditarPassword = async (req: Request, res: Response) => {
+    const { correo, password } = req.body
+    
+    if (correo !== req.datos.get('correo')) {
+        return res.status(401).json('No Autorizado,verifique si tiene un correo asignado')
+    }
+
+    const cambio = await Users.findOne({ where: { correo } })
+
+    const contraseña = password
+    await cambio.update({ contraseña })
+    await cambio.save()
+    return res.status(201).json('Datos Actualizados')
+
+
+}

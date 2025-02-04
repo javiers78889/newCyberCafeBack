@@ -17,6 +17,7 @@ export const usuarioExist = async (req: Request, res: Response, next: NextFuncti
     if (!req.datos) {
         res.status(404).json('usuario no existe')
     } else {
+        
         next()
     }
 }
