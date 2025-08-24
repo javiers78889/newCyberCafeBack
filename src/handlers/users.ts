@@ -19,7 +19,7 @@ export const createusers = async (req: Request, res: Response) => {
 
     const users = await Users.create(Data);
     const Credenciales = {
-        usuario: `Evan3- ${nombre}`,
+        usuario: `Evan3-${nombre}`,
         password,
         nombre,
         correo
